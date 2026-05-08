@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balaji Madhan - AI & Cloud Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Global Animations */
+        @keyframes fade-slide-up {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 204, 0.5), 0 0 20px rgba(0, 255, 204, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(0, 255, 204, 0.8), 0 0 30px rgba(0, 255, 204, 0.5); }
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.9; }
+            5%, 15%, 25% { opacity: 1; }
+            10%, 20%, 30% { opacity: 0.8; }
+        }
+        
+        @keyframes terminal-slide {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+        
+        @keyframes text-type {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes cursor-blink {
+            0%, 49%, 100% { opacity: 1; }
+            50%, 99% { opacity: 0; }
+        }
+        
+        @keyframes glow-border {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 204, 0.3), inset 0 0 10px rgba(0, 255, 204, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.6), inset 0 0 15px rgba(0, 255, 204, 0.2); }
+        }
+        
+        .animate-fade-slide-up {
+            animation: fade-slide-up 1.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .glow-text {
+            animation: glow-pulse 3s ease-in-out infinite;
+        }
+        
+        .flicker-effect {
+            animation: flicker 4s ease-in-out infinite;
+        }
+        
+        .terminal-card {
+            animation: terminal-slide 0.6s ease-out forwards;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .terminal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 255, 204, 0.03) 0%,
+                transparent 50%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            pointer-events: none;
+        }
+        
+        .scanline {
+            animation: scanlines 8s linear infinite;
+        }
+        
+        .glow-card {
+            animation: glow-border 4s ease-in-out infinite;
+        }
+        
+        .status-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 1);
+        }
+        
+        .mask-gradient {
+            mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,0) 100%);
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.1); opacity: 0.55; }
+        }
+
+        .orbit-ring {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: orbit 22s linear infinite;
+        }
+
+        .orbit-node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            transform: rotate(var(--angle, 0deg)) translateX(120px) rotate(calc(-1 * var(--angle, 0deg)));
+        }
+
+        .orbit-node span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 0.95rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(0, 255, 204, 0.25);
+            background: rgba(0, 0, 0, 0.75);
+            font-size: 0.75rem;
+            color: #a7ffeb;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+            box-shadow: 0 0 24px rgba(0, 255, 204, 0.08);
+        }
+
+        .pipeline-step {
+            flex: 1;
+            min-width: 140px;
+            padding: 1rem 1.2rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(0, 255, 204, 0.15);
+            background: rgba(0, 0, 0, 0.65);
+            color: #e5fff7;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: inset 0 0 20px rgba(0, 255, 204, 0.05);
+        }
+
+        .status-pill,
+        .stack-pill,
+        .focus-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.55rem 0.95rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(0, 255, 204, 0.18);
+            background: rgba(0, 255, 204, 0.08);
+            color: #9affea;
+            font-size: 0.70rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .status-pill:hover,
+        .stack-pill:hover,
+        .focus-pill:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 255, 204, 0.35);
+            background: rgba(0, 255, 204, 0.14);
+        }
+
+        .metrics-card {
+            padding: 1.5rem 1.5rem 1.45rem;
+            border-radius: 1.75rem;
+            border: 1px solid rgba(0, 255, 204, 0.15);
+            background: rgba(0, 0, 0, 0.70);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .metrics-card p:first-child {
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: #7ef7d1;
+        }
+
+        .metrics-card .counter {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+        }
+
+        .audio-toggle {
+            border-radius: 9999px;
+            padding: 0.7rem 1rem;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #c8fff1;
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .audio-toggle:hover {
+            background: rgba(0, 255, 204, 0.12);
+            border-color: rgba(0, 255, 204, 0.25);
+        }
+
+        .palette-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(10px);
+        }
+
+        .palette-overlay.active {
+            display: flex;
+        }
+
+        .palette-card {
+            width: min(96vw, 720px);
+            border-radius: 2rem;
+            border: 1px solid rgba(0, 255, 204, 0.18);
+            background: rgba(4, 12, 18, 0.96);
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55);
+            padding: 2rem;
+        }
+
+        .palette-command {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.85rem;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(2, 8, 12, 0.72);
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .palette-command:hover {
+            transform: translateX(4px);
+            background: rgba(0, 255, 204, 0.08);
+        }
+
+        .assistant-card {
+            position: fixed;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            z-index: 50;
+            width: min(92vw, 320px);
+            border-radius: 2rem;
+            border: 1px solid rgba(0, 255, 204, 0.18);
+            background: rgba(2, 8, 12, 0.94);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 32px 100px rgba(0, 0, 0, 0.55);
+            overflow: hidden;
+        }
+
+        .assistant-card header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .assistant-card p {
+            color: #c8fff1;
+        }
+
+        .assistant-card button {
+            border-radius: 9999px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            background: rgba(0, 255, 204, 0.08);
+            color: #e8fff4;
+            padding: 0.65rem 0.9rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.16em;
+        }
+
+        .assistant-card .assistant-body {
+            padding: 1rem 1.2rem 1.25rem;
+            color: #9bdcc6;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body {
+            color-scheme: dark;
+            background: #000000;
+        }
+        
+        /* Smooth Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #00ffcc;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff41;
+        }
+    </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- ===== HERO SECTION ===== -->
+    <section class="relative h-[100dvh] overflow-hidden">
+        <!-- Animated Terminal Grid Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-black to-black">
+            <div class="absolute inset-0 mask-gradient" style="background: radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.05) 0%, transparent 70%);"></div>
+            
+            <!-- Terminal Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 md:p-8 lg:p-12 h-full w-full auto-rows-max opacity-50 pointer-events-none select-none">
+                <!-- AI Agent Orchestrator -->
+                <div class="terminal-card" style="animation-delay: 0s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">ai-agent-orchestrator.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41] live-log">> Initializing autonomous agents...</div>
+                        <div class="text-[#888] live-log">Agents Active: 24</div>
+                        <div class="text-[#00ff41] live-log">Workflow Status: Running</div>
+                        <div class="text-[#888] flicker-effect live-log">Latency: 18ms</div>
+                    </div>
+                </div>
+
+                <!-- LLM Routing Engine -->
+                <div class="terminal-card" style="animation-delay: 0.1s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">llm-routing-engine.ts</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41] live-log">> Routing inference requests...</div>
+                        <div class="text-[#888] live-log">Model Pool: GPT + Vision</div>
+                        <div class="text-[#00ff41] live-log">Tokens/sec: 14,820</div>
+                        <div class="text-[#888] live-log">Inference Load: Balanced</div>
+                    </div>
+                </div>
+
+                <!-- Neural Architecture Search -->
+                <div class="terminal-card" style="animation-delay: 0.2s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">neural-architecture-search.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41] live-log">> Searching optimal architecture...</div>
+                        <div class="text-[#888] live-log">Epochs: 42 | Accuracy: +3.2%</div>
+                        <div class="text-[#00ff41] live-log">Candidates: 184</div>
+                        <div class="text-[#888] live-log">Status: Optimizing</div>
+                    </div>
+                </div>
+
+                <!-- Kubernetes ML Cluster -->
+                <div class="terminal-card" style="animation-delay: 0.3s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">kubernetes-ml-cluster.yaml</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Scaling ML infrastructure...</div>
+                        <div class="text-[#888]">Pods Running: 32</div>
+                        <div class="text-[#00ff41]">GPU Nodes: 8</div>
+                        <div class="text-[#888]">Cluster Health: Stable</div>
+                    </div>
+                </div>
+
+                <!-- Vector Database Runtime -->
+                <div class="terminal-card" style="animation-delay: 0.4s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">vector-database-runtime.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Syncing embeddings...</div>
+                        <div class="text-[#888]">Vectors Indexed: 2.4M</div>
+                        <div class="text-[#00ff41]">Search Latency: 11ms</div>
+                        <div class="text-[#888]">Semantic Retrieval: Active</div>
+                    </div>
+                </div>
+
+                <!-- RAG Pipeline Engine -->
+                <div class="terminal-card" style="animation-delay: 0.5s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">rag-pipeline-engine.ts</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Processing RAG queries...</div>
+                        <div class="text-[#888]">Retrieval Hit Rate: 98.7%</div>
+                        <div class="text-[#00ff41]">Context Window: 4096</div>
+                        <div class="text-[#888]">Pipeline Latency: 34ms</div>
+                    </div>
+                </div>
+
+                <!-- Distributed Training Runtime -->
+                <div class="terminal-card" style="animation-delay: 0.6s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">distributed-training-runtime.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Launching distributed training...</div>
+                        <div class="text-[#888]">GPU Utilization: 92%</div>
+                        <div class="text-[#00ff41]">Training Nodes: 12</div>
+                        <div class="text-[#888]">Gradient Sync: Stable</div>
+                    </div>
+                </div>
+
+                <!-- AI Automation Engine -->
+                <div class="terminal-card" style="animation-delay: 0.7s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">ai-automation-engine.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Executing automation workflows...</div>
+                        <div class="text-[#888]">Pipelines Active: 17</div>
+                        <div class="text-[#00ff41]">Tasks Completed: 4,812</div>
+                        <div class="text-[#888]">Failure Recovery: Enabled</div>
+                    </div>
+                </div>
+
+                <!-- Cloud Scaling Engine -->
+                <div class="terminal-card" style="animation-delay: 0.8s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">cloud-scaling-engine.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Monitoring traffic load...</div>
+                        <div class="text-[#888]">Auto Scaling: Enabled</div>
+                        <div class="text-[#00ff41]">Containers: 14 spawned</div>
+                        <div class="text-[#888]">Peak Requests/sec: 18K</div>
+                    </div>
+                </div>
+
+                <!-- AI Security Scan -->
+                <div class="terminal-card" style="animation-delay: 0.9s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">ai-security-scan.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Running security scan...</div>
+                        <div class="text-[#888]">Threats: 0 detected</div>
+                        <div class="text-[#00ff41]">API Integrity: Verified</div>
+                        <div class="text-[#888]">Runtime Status: Secure</div>
+                    </div>
+                </div>
+
+                <!-- Semantic Search Runtime -->
+                <div class="terminal-card" style="animation-delay: 1s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">semantic-search-runtime.log</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Processing semantic queries...</div>
+                        <div class="text-[#888]">Embeddings: 1.2M loaded</div>
+                        <div class="text-[#00ff41]">Query Match: 98.4%</div>
+                        <div class="text-[#888]">Retrieval Pipeline: Active</div>
+                    </div>
+                </div>
+
+                <!-- MLOps Deployment Pipeline -->
+                <div class="terminal-card" style="animation-delay: 1.1s;">
+                    <div class="h-7 px-3 flex items-center justify-between border-b border-[#ffffff10]">
+                        <span class="text-[10px] font-mono tracking-wide text-[#666]">mlops-deployment-pipeline.yaml</span>
+                        <span class="status-dot w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    </div>
+                    <div class="p-3 font-mono text-[11px] space-y-1">
+                        <div class="text-[#00ff41]">> Deploying ML models...</div>
+                        <div class="text-[#888]">Version: 3.2.1</div>
+                        <div class="text-[#00ff41]">Rollout: 94% Complete</div>
+                        <div class="text-[#888]">Health: Passing</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-20 h-full flex items-center justify-center">
+            <nav class="absolute top-6 left-1/2 z-30 w-[calc(100%-2rem)] max-w-6xl -translate-x-1/2 rounded-[2rem] border border-white/10 bg-black/50 backdrop-blur-2xl px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3 text-white/80">
+                <div class="flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.28em] font-mono">
+                    <span>AI CONSOLE</span>
+                    <span class="status-pill">SYSTEMS: ONLINE</span>
+                    <span class="status-pill">GPU CLUSTER: ACTIVE</span>
+                    <span class="status-pill">LATENCY: 18ms</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="toggle-audio" class="audio-toggle text-xs tracking-[0.25em] uppercase font-bold">Ambient</button>
+                    <span class="text-[11px] font-mono text-gray-400">Press <span class="text-white">/</span> or <span class="text-white">Ctrl+K</span></span>
+                </div>
+            </nav>
+
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute inset-0 opacity-40">
+                    <svg viewBox="0 0 1200 700" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="lineGlow" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.25" />
+                                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.05" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M120 180 C 240 80, 420 140, 520 80 S 760 230, 900 180" stroke="url(#lineGlow)" stroke-width="1.4" fill="none" />
+                        <path d="M980 520 C 860 460, 760 580, 650 520 S 450 620, 320 560" stroke="url(#lineGlow)" stroke-width="1.2" fill="none" />
+                        <path d="M180 620 C 260 540, 380 620, 520 560" stroke="url(#lineGlow)" stroke-width="1.1" fill="none" />
+                        <circle cx="120" cy="180" r="4" fill="#00ffcc" opacity="0.8" class="animate-pulse" />
+                        <circle cx="520" cy="80" r="4" fill="#38bdf8" opacity="0.8" class="animate-pulse" />
+                        <circle cx="900" cy="180" r="4" fill="#00ffcc" opacity="0.8" class="animate-pulse" />
+                        <circle cx="980" cy="520" r="4" fill="#38bdf8" opacity="0.9" class="animate-pulse" />
+                        <circle cx="320" cy="560" r="4" fill="#00ffcc" opacity="0.8" class="animate-pulse" />
+                    </svg>
+                </div>
+                <div class="absolute left-12 top-16 h-24 w-24 rounded-full border border-[#00ffcc]/10 blur-2xl opacity-70"></div>
+                <div class="absolute right-12 bottom-16 h-28 w-28 rounded-full border border-[#38bdf8]/10 blur-2xl opacity-60"></div>
+                <div class="absolute inset-0 hidden xl:block">
+                    <div class="absolute right-16 bottom-16 w-72 h-72">
+                        <div class="orbit-ring">
+                            <div class="orbit-node" style="--angle:0deg"><span>CUDA</span></div>
+                            <div class="orbit-node" style="--angle:45deg"><span>TensorFlow</span></div>
+                            <div class="orbit-node" style="--angle:90deg"><span>React</span></div>
+                            <div class="orbit-node" style="--angle:135deg"><span>Kafka</span></div>
+                            <div class="orbit-node" style="--angle:180deg"><span>Docker</span></div>
+                            <div class="orbit-node" style="--angle:225deg"><span>Python</span></div>
+                            <div class="orbit-node" style="--angle:270deg"><span>Vertex AI</span></div>
+                            <div class="orbit-node" style="--angle:315deg"><span>Kubernetes</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+                <div class="flex flex-col gap-7 lg:gap-10">
+                    <!-- Badge -->
+                    <div class="animate-fade-slide-up self-center" style="animation-delay: 0.08s;">
+                        <span class="bg-gradient-to-r from-[#00ffcc] to-[#00ff41] text-black px-4 py-2 text-sm font-bold rounded-full uppercase tracking-widest">
+                            AI × Cloud × ML
+                        </span>
+                    </div>
+
+                    <!-- Name -->
+                    <h1 class="text-5xl lg:text-8xl font-bold tracking-[-0.035em] leading-[0.9] animate-fade-slide-up" style="animation-delay: 0.14s;">
+                        Engineering AI Systems.<br/>Deploying Autonomous Infrastructure.<br/>Scaling Intelligent Architectures.
+                    </h1>
+
+                    <!-- Core Expertise Tags -->
+                    <p class="text-base lg:text-lg font-mono text-[#00ffcc] tracking-widest animate-fade-slide-up" style="animation-delay: 0.18s;">
+                        AI • INFRASTRUCTURE • AUTOMATION • MLOPS • DEPLOYMENT
+                    </p>
+
+                    <!-- Typing Animation Roles -->
+                    <div class="animate-fade-slide-up" style="animation-delay: 0.22s;">
+                        <p class="text-xl lg:text-2xl font-mono text-[#00ffcc] glow-text tracking-wider">
+                            <span id="role-text">AI Systems Engineer</span><span style="animation: cursor-blink 0.8s infinite;">▋</span>
+                        </p>
+                    </div>
+
+                    <!-- Headline -->
+                    <p class="text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed text-gray-300 animate-fade-slide-up" style="animation-delay: 0.26s;">
+                        Systems thinking, cloud-native ML platforms, and automated infrastructure for production-grade AI products.
+                    </p>
+
+                    <!-- System Status Strip -->
+                    <div class="mt-6 flex flex-wrap justify-center gap-3 text-[11px] uppercase font-mono tracking-[0.35em] text-[#00ffcc] animate-fade-slide-up" style="animation-delay: 0.30s;">
+                        <span class="status-pill">AI Agents: Online</span>
+                        <span class="status-pill">GPU Cluster: Active</span>
+                        <span class="status-pill">Inference Latency: 18ms</span>
+                        <span class="status-pill">Cloud Runtime: Stable</span>
+                        <span class="status-pill">MLOps Pipeline: Running</span>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-wrap gap-4 justify-center animate-fade-slide-up" style="animation-delay: 0.34s;">
+                        <a href="#projects" class="group relative px-8 py-3 font-mono text-sm tracking-widest uppercase bg-white text-black hover:bg-[#00ffcc] transition-all border border-white">
+                            View Projects
+                        </a>
+                        <a href="#contact" class="group relative px-8 py-3 font-mono text-sm tracking-widest uppercase border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all">
+                            Contact Me
+                        </a>
+                        <a href="https://github.com/BALAJI-CODE-collab" target="_blank" class="group relative px-8 py-3 font-mono text-sm tracking-widest uppercase border border-gray-500 text-gray-300 hover:border-[#00ffcc] hover:text-[#00ffcc] transition-all">
+                            GitHub
+                        </a>
+                    </div>
+
+                    <!-- Current Focus -->
+                    <div class="overflow-x-auto no-scrollbar mt-8 py-2 animate-fade-slide-up" style="animation-delay: 0.38s;">
+                        <div class="inline-flex gap-3">
+                            <span class="focus-pill">AI Automation Systems</span>
+                            <span class="focus-pill">Cloud-Native ML Infrastructure</span>
+                            <span class="focus-pill">Computer Vision Pipelines</span>
+                            <span class="focus-pill">CUDA Accelerated Workloads</span>
+                            <span class="focus-pill">Intelligent Full Stack Platforms</span>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-8 animate-fade-slide-up" style="animation-delay: 0.42s;">
+                        <div class="metrics-card">
+                            <p>Models Trained</p>
+                            <p class="counter" data-target="42">0</p>
+                            <p class="text-sm text-gray-400 mt-3">Production-ready model pipelines with automated tuning.</p>
+                        </div>
+                        <div class="metrics-card">
+                            <p>Deployments Simulated</p>
+                            <p class="counter" data-target="37">0</p>
+                            <p class="text-sm text-gray-400 mt-3">Continuous delivery across cloud and edge environments.</p>
+                        </div>
+                        <div class="metrics-card">
+                            <p>AI Pipelines Built</p>
+                            <p class="counter" data-target="29">0</p>
+                            <p class="text-sm text-gray-400 mt-3">Automated MLOps workflows for robust system reliability.</p>
+                        </div>
+                        <div class="metrics-card">
+                            <p>Hackathons Participated</p>
+                            <p class="counter" data-target="8">0</p>
+                            <p class="text-sm text-gray-400 mt-3">Rapid prototyping under tight timelines and real-world pressure.</p>
+                        </div>
+                        <div class="metrics-card">
+                            <p>GitHub Contributions</p>
+                            <p class="counter" data-target="512">0</p>
+                            <p class="text-sm text-gray-400 mt-3">Infrastructure and AI architecture contributions with version control.</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Thought Process -->
+                    <div class="mt-10 animate-fade-slide-up" style="animation-delay: 0.46s;">
+                        <div class="relative overflow-hidden rounded-[2rem] border border-[#00ffcc]/15 bg-[#040b10]/85 p-6 backdrop-blur-xl">
+                            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#00ffcc] via-transparent to-[#38bdf8]"></div>
+                            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                                <div class="pipeline-step">Analyze</div>
+                                <div class="pipeline-step">Train</div>
+                                <div class="pipeline-step">Optimize</div>
+                                <div class="pipeline-step">Deploy</div>
+                                <div class="pipeline-step">Scale</div>
+                            </div>
+                            <p class="mt-5 text-sm text-gray-400 max-w-3xl mx-auto">Analyze systems, train robust models, optimize performance, deploy reliable infrastructure, and scale AI services with engineering discipline.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== AI ARCHITECTURE STACK ===== -->
+    <section id="architecture" class="relative py-20 lg:py-28 px-6 lg:px-12 bg-gradient-to-b from-black via-[#040b10] to-[#0a0a0a] overflow-hidden">
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="mb-14 lg:mb-16 text-center">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    Architecture <span class="text-[#00ffcc]">Stack</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">A systems-first architecture model that highlights how AI, cloud, infrastructure, and data work together.</p>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-2">
+                <div class="glow-card border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-3xl">
+                    <p class="text-sm uppercase tracking-[0.28em] text-[#00ffcc] font-mono mb-4">Frontend</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="stack-pill">React</span>
+                        <span class="stack-pill">Tailwind</span>
+                        <span class="stack-pill">Three.js</span>
+                    </div>
+                </div>
+                <div class="glow-card border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-3xl">
+                    <p class="text-sm uppercase tracking-[0.28em] text-[#00ffcc] font-mono mb-4">Backend</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="stack-pill">Node.js</span>
+                        <span class="stack-pill">REST / gRPC</span>
+                        <span class="stack-pill">FastAPI</span>
+                    </div>
+                </div>
+                <div class="glow-card border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-3xl">
+                    <p class="text-sm uppercase tracking-[0.28em] text-[#00ffcc] font-mono mb-4">AI Layer</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="stack-pill">TensorFlow</span>
+                        <span class="stack-pill">Scikit-learn</span>
+                        <span class="stack-pill">PyTorch</span>
+                    </div>
+                </div>
+                <div class="glow-card border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-3xl">
+                    <p class="text-sm uppercase tracking-[0.28em] text-[#00ffcc] font-mono mb-4">Infrastructure</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="stack-pill">Docker</span>
+                        <span class="stack-pill">Kubernetes</span>
+                        <span class="stack-pill">Terraform</span>
+                    </div>
+                </div>
+                <div class="glow-card border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-3xl">
+                    <p class="text-sm uppercase tracking-[0.28em] text-[#00ffcc] font-mono mb-4">Data Layer</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="stack-pill">MySQL</span>
+                        <span class="stack-pill">Vector DB</span>
+                        <span class="stack-pill">Redis</span>
+                    </div>
+                </div>
+                <div class="glow-card border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-3xl">
+                    <p class="text-sm uppercase tracking-[0.28em] text-[#00ffcc] font-mono mb-4">Cloud</p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="stack-pill">Vertex AI</span>
+                        <span class="stack-pill">Kafka</span>
+                        <span class="stack-pill">GCP / AWS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROJECTS SECTION ===== -->
+    <section id="projects" class="relative py-20 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-black via-[#0a0a0a] to-black overflow-hidden">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="grid grid-cols-12 h-full w-full">
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+                <div class="border-r border-[#00ffcc]/20"></div>
+            </div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="mb-16 lg:mb-20">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    Featured <span class="text-[#00ffcc]">Projects</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl">
+                    Intelligent systems leveraging AI, cloud infrastructure, and full-stack development to solve real-world problems at scale.
+                </p>
+            </div>
+
+            <!-- Project Cards Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="group glow-card relative overflow-hidden border border-[#00ffcc]/30 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#00ffcc]/5 to-transparent pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-[#00ffcc] transition-colors">
+                            Automated Produce Grading & Sorting
+                        </h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">
+                            Computer vision system for surface defect detection and quality assessment using advanced neural networks.
+                        </p>
+                        <div class="mb-6">
+                            <p class="text-sm text-[#00ffcc] mb-3 font-mono tracking-wider">TECHNOLOGIES</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">YOLOv11</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">CBAM</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">OpenCV</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">PyTorch</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/BALAJI-CODE-collab" target="_blank" class="px-6 py-2 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm">
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group glow-card relative overflow-hidden border border-[#00ffcc]/30 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#00ffcc]/5 to-transparent pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-[#00ffcc] transition-colors">
+                            Alzheimer's Disease Early Prediction
+                        </h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">
+                            Predictive healthcare system using cognitive gameplay analytics and behavioral analysis for early disease detection.
+                        </p>
+                        <div class="mb-6">
+                            <p class="text-sm text-[#00ffcc] mb-3 font-mono tracking-wider">TECHNOLOGIES</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">TensorFlow</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">Scikit-learn</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">Python</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">ML</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/BALAJI-CODE-collab" target="_blank" class="px-6 py-2 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm">
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="group glow-card relative overflow-hidden border border-[#00ffcc]/30 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg lg:col-span-2">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#00ffcc]/5 to-transparent pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold mb-3 text-white group-hover:text-[#00ffcc] transition-colors">
+                            Eco-Route: Carbon Footprint Navigator
+                        </h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed">
+                            Full-stack eco-routing platform optimizing transportation paths for minimal carbon emissions using advanced algorithms and real-time visualizations.
+                        </p>
+                        <div class="mb-6">
+                            <p class="text-sm text-[#00ffcc] mb-3 font-mono tracking-wider">TECHNOLOGIES</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">Google Maps API</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">CEROS Algorithm</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">Streamlit</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">Folium</span>
+                                <span class="px-3 py-1 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded text-sm text-[#00ffcc] font-mono">Python</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://github.com/BALAJI-CODE-collab" target="_blank" class="px-6 py-2 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm">
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EXPERIENCE SECTION ===== -->
+    <section class="relative py-20 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-black to-[#0a0a0a] overflow-hidden">
+        <div class="relative z-10 max-w-5xl mx-auto">
+            <!-- Section Header -->
+            <div class="mb-16 lg:mb-20">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    <span class="text-[#00ffcc]">Experience</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl">
+                    Internship exposure to enterprise ML systems, cloud engineering, and scalable infrastructure development.
+                </p>
+            </div>
+
+            <!-- Experience Timeline -->
+            <div class="space-y-12">
+                <!-- Experience 1 -->
+                <div class="group border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc]/50 transition-all">
+                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Artificial Intelligence Intern</h3>
+                            <p class="text-[#00ffcc] font-mono text-sm">KrypC Technologies Pvt Ltd</p>
+                        </div>
+                        <p class="text-gray-500 font-mono text-sm mt-2 lg:mt-0">Recent</p>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">
+                        Worked on enterprise AI workflows, ML model optimization, and scalable engineering solutions. Gained hands-on experience with cloud deployment, backend systems, and collaborative AI development at scale.
+                    </p>
+                </div>
+
+                <!-- Experience 2 -->
+                <div class="group border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc]/50 transition-all">
+                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Machine Learning Intern</h3>
+                            <p class="text-[#00ffcc] font-mono text-sm">Prodigy Infotech</p>
+                        </div>
+                        <p class="text-gray-500 font-mono text-sm mt-2 lg:mt-0">Previous</p>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">
+                        Developed predictive models using classification and regression algorithms. Handled data preprocessing, feature engineering, and model evaluation using Scikit-learn and industry best practices.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SYSTEMS & PLATFORMS ===== -->
+    <section class="relative py-20 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-[#0a0a0a] via-black to-black overflow-hidden">
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="mb-16 lg:mb-20">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    <span class="text-[#00ffcc]">Systems</span> & Platforms
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl">
+                    Engineering systems and infrastructure platforms with a focus on production-ready AI operations and cloud-native deployment.
+                </p>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">Python</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">C/C++</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">CUDA</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">TensorFlow</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">PyTorch</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">React</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">Docker</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">Kubernetes</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">Vertex AI</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">Kafka</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">MySQL</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg text-center hover:border-[#00ffcc] transition-all">
+                    <p class="text-lg font-bold text-white group-hover:text-[#00ffcc] transition-colors">Git/GitHub</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EDUCATION SECTION ===== -->
+    <section class="relative py-20 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-black to-[#0a0a0a] overflow-hidden">
+        <div class="relative z-10 max-w-5xl mx-auto">
+            <!-- Section Header -->
+            <div class="mb-16 lg:mb-20">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    <span class="text-[#00ffcc]">Education</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl">
+                    Academic excellence and continuous learning in Artificial Intelligence and Machine Learning.
+                </p>
+            </div>
+
+            <!-- Education Cards -->
+            <div class="space-y-12">
+                <!-- SRM University -->
+                <div class="group border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc]/50 transition-all">
+                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">B.Tech Artificial Intelligence & Machine Learning</h3>
+                            <p class="text-[#00ffcc] font-mono text-sm">SRM Institute of Science and Technology, Trichy</p>
+                        </div>
+                        <p class="text-gray-500 font-mono text-sm mt-2 lg:mt-0">Pursuing (III Year)</p>
+                    </div>
+                    <div class="mb-6">
+                        <p class="text-gray-400 mb-3">CGPA: <span class="text-[#00ff41] font-bold">8.61</span></p>
+                        <p class="text-gray-500 text-sm mb-4">Semester Progression:</p>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="px-4 py-2 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded font-mono text-sm text-[#00ffcc]">Sem 1: 8.00</div>
+                            <div class="px-4 py-2 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded font-mono text-sm text-[#00ffcc]">Sem 2: 8.05</div>
+                            <div class="px-4 py-2 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded font-mono text-sm text-[#00ffcc]">Sem 3: 8.95</div>
+                            <div class="px-4 py-2 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded font-mono text-sm text-[#00ffcc]">Sem 4: 8.97</div>
+                            <div class="px-4 py-2 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded font-mono text-sm text-[#00ffcc]">Sem 5: 9.05</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Education -->
+                <div class="group border border-[#00ffcc]/20 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc]/50 transition-all">
+                    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Senior Secondary School</h3>
+                            <p class="text-[#00ffcc] font-mono text-sm">Maharishi International Residential School</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CERTIFICATIONS SECTION ===== -->
+    <section class="relative py-20 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-[#0a0a0a] via-black to-black overflow-hidden">
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="mb-16 lg:mb-20">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    <span class="text-[#00ffcc]">Achievements</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl">
+                    Certifications, hackathon wins, and recognition for technical excellence.
+                </p>
+            </div>
+
+            <!-- Achievements Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all text-center">
+                    <p class="text-lg font-bold text-white mb-2">Cisco Packet Tracer</p>
+                    <p class="text-gray-400 text-sm">Networking Certification</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all text-center">
+                    <p class="text-lg font-bold text-white mb-2">NPTEL Python for DS</p>
+                    <p class="text-gray-400 text-sm">Data Science Course</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all text-center">
+                    <p class="text-lg font-bold text-white mb-2">Coursera ML</p>
+                    <p class="text-gray-400 text-sm">Machine Learning Specialization</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all text-center">
+                    <p class="text-lg font-bold text-[#00ff41] mb-2">🏆 3 Hackathons</p>
+                    <p class="text-gray-400 text-sm">Medal + ₹2000 Prize</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all text-center">
+                    <p class="text-lg font-bold text-white mb-2">Hackathon Winner</p>
+                    <p class="text-gray-400 text-sm">Multiple Competitions</p>
+                </div>
+                <div class="group glow-card border border-[#00ffcc]/30 p-6 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all text-center">
+                    <p class="text-lg font-bold text-white mb-2">Recognition</p>
+                    <p class="text-gray-400 text-sm">Excellence in AI/ML</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section id="contact" class="relative py-20 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-black to-[#0a0a0a] overflow-hidden">
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <!-- Section Header -->
+            <div class="mb-16 lg:mb-20 text-center">
+                <h2 class="text-5xl lg:text-7xl font-bold mb-4 tracking-tight">
+                    Let's <span class="text-[#00ffcc]">Build</span> Together
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Interested in collaborating on AI systems, cloud infrastructure, or innovative projects?
+                </p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <a href="mailto:balaji.madhan@example.com" class="group glow-card border border-[#00ffcc]/30 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all">
+                    <p class="text-[#00ffcc] font-mono text-sm mb-2">EMAIL</p>
+                    <p class="text-xl font-bold text-white group-hover:text-[#00ffcc] transition-colors">balaji.madhan@example.com</p>
+                </a>
+                <a href="tel:+919876543210" class="group glow-card border border-[#00ffcc]/30 p-8 bg-[#0a0a0a]/40 backdrop-blur-xl rounded-lg hover:border-[#00ffcc] transition-all">
+                    <p class="text-[#00ffcc] font-mono text-sm mb-2">PHONE</p>
+                    <p class="text-xl font-bold text-white group-hover:text-[#00ffcc] transition-colors">+91 9876543210</p>
+                </a>
+            </div>
+
+            <!-- Social Links -->
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://github.com/BALAJI-CODE-collab" target="_blank" class="group px-8 py-3 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm rounded">
+                    GitHub
+                </a>
+                <a href="https://linkedin.com/in/balaji-madhan" target="_blank" class="group px-8 py-3 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm rounded">
+                    LinkedIn
+                </a>
+                <a href="#projects" class="group px-8 py-3 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm rounded">
+                    Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="relative py-12 px-6 lg:px-12 border-t border-[#00ffcc]/10 bg-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-gray-500 font-mono text-sm">
+                    © 2024 Balaji Madhan. Crafted with <span class="text-[#00ffcc]">AI</span> × <span class="text-[#00ff41]">Cloud</span> × <span class="text-[#38bdf8]">Code</span>
+                </p>
+                <div class="flex gap-6">
+                    <a href="https://github.com/BALAJI-CODE-collab" target="_blank" class="text-gray-500 hover:text-[#00ffcc] transition-colors font-mono text-sm">
+                        GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/balaji-madhan" target="_blank" class="text-gray-500 hover:text-[#00ffcc] transition-colors font-mono text-sm">
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="command-palette" class="palette-overlay" aria-hidden="true">
+        <div class="palette-card">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.3em] text-[#00ffcc] font-mono">Command Palette</p>
+                    <h3 class="text-3xl font-bold text-white mt-2">Instant AI Console</h3>
+                </div>
+                <button id="close-palette" class="audio-toggle text-xs tracking-[0.25em] uppercase font-bold">Close</button>
+            </div>
+            <div class="space-y-3">
+                <div class="palette-command" data-command="view projects">
+                    <span>view projects</span>
+                    <span class="text-[#00ffcc]">#projects</span>
+                </div>
+                <div class="palette-command" data-command="open github">
+                    <span>open github</span>
+                    <span class="text-[#00ffcc]">GitHub</span>
+                </div>
+                <div class="palette-command" data-command="download resume">
+                    <span>download resume</span>
+                    <span class="text-[#00ffcc]">Resume</span>
+                </div>
+                <div class="palette-command" data-command="contact balaji">
+                    <span>contact balaji</span>
+                    <span class="text-[#00ffcc]">#contact</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="assistant-card" id="assistant-panel">
+        <header>
+            <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-[#00ffcc] font-mono">BALAJI_AI_AGENT</p>
+                <p class="text-sm text-gray-200">Ask about AI systems, architecture, projects, and MLOps.</p>
+            </div>
+            <button id="open-palette" type="button">Open</button>
+        </header>
+        <div class="assistant-body">
+            <p>Tap the console to explore: Projects • Skills • Experience • Architecture • AI Systems.</p>
+            <p class="mt-4 text-xs uppercase tracking-[0.25em] text-[#00ffcc]">Press / or Ctrl+K</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // Typing Animation for Roles
+        const roles = ['AI/ML Engineer', 'ML Infrastructure Architect', 'AI Systems Engineer', 'MLOps Specialist', 'Autonomous Systems Developer', 'Cloud-Native AI Engineer'];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const roleTextEl = document.getElementById('role-text');
+        const paletteOverlay = document.getElementById('command-palette');
+        const openPaletteButton = document.getElementById('open-palette');
+        const closePaletteButton = document.getElementById('close-palette');
+        const toggleAudioButton = document.getElementById('toggle-audio');
+        const paletteCommands = document.querySelectorAll('.palette-command');
+        const counterElements = document.querySelectorAll('.counter');
+        const liveLogElements = document.querySelectorAll('.live-log');
+        let audioContext;
+        let oscillator;
+        let audioGain;
+        let countersStarted = false;
+
+        function typeRole() {
+            const currentRole = roles[roleIndex];
+
+            if (isDeleting) {
+                charIndex--;
+            } else {
+                charIndex++;
+            }
+
+            roleTextEl.textContent = currentRole.substring(0, charIndex);
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                setTimeout(() => { isDeleting = true; }, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+            }
+
+            setTimeout(typeRole, isDeleting ? 50 : 100);
+        }
+
+        function animateCounters() {
+            if (countersStarted) return;
+            countersStarted = true;
+
+            counterElements.forEach((counter) => {
+                const target = Number(counter.dataset.target) || 0;
+                let current = 0;
+                const increment = Math.max(1, Math.round(target / 60));
+
+                const update = () => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target;
+                    } else {
+                        counter.textContent = current;
+                        requestAnimationFrame(update);
+                    }
+                };
+
+                update();
+            });
+        }
+
+        function updateLiveLogs() {
+            const messages = [
+                '[SYNC] AI runtime connected',
+                '[TRAIN] Epoch 52 complete',
+                '[DEPLOY] Cluster scaling initiated',
+                '[MON] GPU temp normal',
+                '[PIPE] DAG checkpoint saved',
+                '[API] Inference request routed',
+                '[SCAL] Autoscale event queued'
+            ];
+
+            liveLogElements.forEach((element, index) => {
+                const random = messages[Math.floor(Math.random() * messages.length)];
+                if (index % 2 === 0) {
+                    element.textContent = random;
+                } else {
+                    element.textContent = `${random} - ${Math.floor(Math.random() * 98) + 2}%`;
+                }
+            });
+        }
+
+        function startAudioEngine() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                oscillator = audioContext.createOscillator();
+                audioGain = audioContext.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(65, audioContext.currentTime);
+                audioGain.gain.setValueAtTime(0.0018, audioContext.currentTime);
+                oscillator.connect(audioGain).connect(audioContext.destination);
+                oscillator.start();
+            }
+        }
+
+        function stopAudioEngine() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator.disconnect();
+                audioGain.disconnect();
+                oscillator = null;
+                audioGain = null;
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+        }
+
+        function openCommandPalette() {
+            paletteOverlay.classList.add('active');
+            paletteOverlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeCommandPalette() {
+            paletteOverlay.classList.remove('active');
+            paletteOverlay.setAttribute('aria-hidden', 'true');
+        }
+
+        function executeCommand(command) {
+            if (command === 'view projects') {
+                document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+            }
+            if (command === 'open github') {
+                window.open('https://github.com/BALAJI-CODE-collab', '_blank');
+            }
+            if (command === 'download resume') {
+                window.location.href = '#contact';
+            }
+            if (command === 'contact balaji') {
+                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+            }
+            closeCommandPalette();
+        }
+
+        typeRole();
+        animateCounters();
+        updateLiveLogs();
+        setInterval(updateLiveLogs, 4200);
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Command palette controls
+        openPaletteButton.addEventListener('click', openCommandPalette);
+        closePaletteButton.addEventListener('click', closeCommandPalette);
+        paletteOverlay.addEventListener('click', (event) => {
+            if (event.target === paletteOverlay) closeCommandPalette();
+        });
+
+        paletteCommands.forEach((item) => {
+            item.addEventListener('click', () => executeCommand(item.dataset.command));
+        });
+
+        // Audio toggle
+        toggleAudioButton.addEventListener('click', () => {
+            if (toggleAudioButton.dataset.active === 'true') {
+                stopAudioEngine();
+                toggleAudioButton.dataset.active = 'false';
+                toggleAudioButton.textContent = 'Ambient';
+            } else {
+                startAudioEngine();
+                toggleAudioButton.dataset.active = 'true';
+                toggleAudioButton.textContent = 'Ambient On';
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '/' || (event.ctrlKey && event.key.toLowerCase() === 'k')) {
+                event.preventDefault();
+                openCommandPalette();
+            }
+            if (event.key === 'Escape') {
+                closeCommandPalette();
+            }
+        });
+
+        // GSAP Animations on Scroll
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray('.glow-card').forEach((card) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                y: 30,
+                duration: 0.8
+            });
+        });
+    </script>
+</body>
+</html>
