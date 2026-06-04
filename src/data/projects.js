@@ -3,6 +3,18 @@
 
 export const projects = [
   {
+    // Semantic AI project moved to top so it appears first
+    title: 'Semantic AI — Vector Retrieval & Agent Console',
+    signal: 'Semantic Search + AI Runtime',
+    description:
+      'Semantic AI project that powers contextual retrieval, vector search synchronization, and an agent-ready runtime surface for engineering Q&A.',
+    stack: ['Semantic Retrieval', 'Vector Search', 'Embeddings', 'Agent Runtime', 'Python'],
+    logs: ['Embeddings indexed', 'Similarity search active', 'Agent console responsive'],
+    githubUrl: 'https://github.com/BALAJI-CODE-collab',
+    imageUrl: '/projects/semantic-ai.png',
+  },
+
+  {
     title: 'Automated Grading and Sorting of Aggregated Produce using Computer Vision',
     signal: 'Vision Inference Product',
     description:
@@ -44,19 +56,6 @@ export const projects = [
     logs: ['Repos indexed', 'Contributions synced', 'Build graph online'],
     githubUrl: 'https://github.com/BALAJI-CODE-collab',
     imageUrl: '/projects/repo-cluster.png', // TODO
-  },
-
-  {
-    // Add new project(s) below.
-    // ✅ Semantic AI project (requested)
-    title: 'Semantic AI — Vector Retrieval & Agent Console',
-    signal: 'Semantic Search + AI Runtime',
-    description:
-      'Semantic AI project that powers contextual retrieval, vector search synchronization, and an agent-ready runtime surface for engineering Q&A.',
-    stack: ['Semantic Retrieval', 'Vector Search', 'Embeddings', 'Agent Runtime', 'Python'],
-    logs: ['Embeddings indexed', 'Similarity search active', 'Agent console responsive'],
-    githubUrl: 'https://github.com/BALAJI-CODE-collab',
-    imageUrl: '/projects/semantic-ai.png',
   },
 ];
 

@@ -149,8 +149,8 @@ export const achievements = [
 ];
 
 export const resume = {
-  viewUrl: '/finalresume%20(1).pdf',
-  downloadUrl: '/finalresume%20(1).pdf',
+  viewUrl: '/finalresume%20%281%29.pdf',
+  downloadUrl: '/finalresume%20%281%29.pdf',
 };
 
 export const profile = {
