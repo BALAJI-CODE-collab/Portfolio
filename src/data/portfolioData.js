@@ -148,20 +148,10 @@ export const achievements = [
   'Rs. 2000 cash prize',
 ];
 
-export const resume = {
-  viewUrl: '/resume.pdf',
-  downloadUrl: '/resume.pdf',
-};
-
-export const profile = {
-  imageUrl: '/profile.jpg',
-};
-
 export const commands = [
   ['view projects', 'projects'],
   ['open github', 'github'],
   ['open linkedin', 'linkedin'],
-  ['download resume', 'resume'],
   ['contact balaji', 'contact'],
   ['launch ai assistant', 'assistant'],
 ];

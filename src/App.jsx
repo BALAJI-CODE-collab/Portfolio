@@ -24,12 +24,10 @@ import { CommandPalette } from './components/CommandPalette';
 import { ArchitectureBackdrop, LivingGrid } from './components/LivingGrid';
 import { architecture, focusItems, metrics, roles, statusItems } from './data/portfolioData';
 import { projects } from './data/projects';
-import { profile, } from './data/profile';
 import { skills, achievements } from './data/skills';
 import { experience } from './data/experience';
 import { education } from './data/education';
 import { certifications } from './data/certifications';
-import { resume } from './data/resume';
 import { socialProfiles } from './data/socials';
 
 function useTyping(words) {
@@ -59,16 +57,9 @@ function Header({ onPalette, onAssistant }) {
   return (
     <header className="fixed left-4 right-4 top-4 z-40 rounded-2xl border border-white/10 bg-black/80 px-4 py-3 shadow-[0_20px_70px_rgba(0,0,0,0.45)] backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img
-              src={profile.imageUrl}
-              alt={profile.name}
-              className="h-9 w-9 rounded-xl border border-cyan-300/20 bg-cyan-300/10 object-cover"
-            />
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100">{profile.name}</p>
-              <p className="hidden text-xs text-slate-500 sm:block">AI infrastructure portfolio runtime</p>
-            </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100">Balaji Madhan</p>
+            <p className="hidden text-xs text-slate-500 sm:block">AI infrastructure portfolio runtime</p>
           </div>
         <div className="flex items-center gap-2">
           <button className="nav-chip hidden sm:inline-flex" onClick={onAssistant}>BALAJI_AI_AGENT</button>
@@ -216,55 +207,6 @@ function SectionContext({ label, children }) {
   );
 }
 
-function Resume() {
-  return (
-    <section id="resume" className="fade-section mx-auto max-w-7xl px-5 py-24">
-      <SectionTitle eyebrow="Resume" title="View & download your resume." />
-      <SectionContext label="resume actions">
-        Use the view/download options below. View opens the PDF in a new tab.
-      </SectionContext>
-
-      <div className="mt-14 grid gap-6 lg:grid-cols-2">
-        <div className="glass-panel p-6">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan-300">Your profile</p>
-          <div className="mt-6 flex items-center gap-5">
-            <img
-              src={profile.imageUrl}
-              alt="Balaji Madhan"
-              className="h-20 w-20 rounded-full border border-cyan-200/20 bg-cyan-300/10 object-cover"
-            />
-            <div>
-              <p className="text-2xl font-bold text-white">Balaji Madhan</p>
-              <p className="mt-1 text-sm text-slate-400">AI/ML + Cloud Systems Engineer</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-panel p-6">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan-300">Resume files</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              className="project-action mt-0"
-              href={resume.viewUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View Resume
-              <ExternalLink className="h-4 w-4" />
-            </a>
-
-            <a className="project-action mt-0" href={resume.downloadUrl} download>
-              Download Resume
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
 function FocusAndMetrics() {
   return (
     <section className="fade-section mx-auto max-w-7xl px-5 py-24">
@@ -361,7 +303,7 @@ function Projects() {
                   alt={project.title}
                   className="h-48 w-full object-cover"
                   loading="lazy"
-                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = profile.imageUrl; }}
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }}
                 />
               </div>
             ) : (
@@ -568,7 +510,6 @@ export default function App() {
           <FocusAndMetrics />
           <ArchitectureStack />
           <Projects />
-          <Resume />
           <ProfileNetwork />
           <ExperienceEducationSkills />
           <Contact />

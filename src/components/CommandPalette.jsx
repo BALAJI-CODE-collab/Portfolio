@@ -8,7 +8,7 @@ export function CommandPalette({ open, onClose, onAssistant }) {
     if (action === 'github') window.open('https://github.com/BALAJI-CODE-collab', '_blank', 'noopener,noreferrer');
     if (action === 'linkedin') window.open('https://www.linkedin.com/in/balaji-madhan-574868313/', '_blank', 'noopener,noreferrer');
     if (action === 'projects') document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-    if (action === 'contact' || action === 'resume') document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    if (action === 'contact') document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
     if (action === 'assistant') onAssistant();
   };
 
