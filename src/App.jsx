@@ -59,15 +59,17 @@ function Header({ onPalette, onAssistant }) {
   return (
     <header className="fixed left-4 right-4 top-4 z-40 rounded-2xl border border-white/10 bg-black/80 px-4 py-3 shadow-[0_20px_70px_rgba(0,0,0,0.45)] backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
-            <Hexagon className="h-5 w-5" />
-          </span>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100">Balaji Madhan</p>
-            <p className="hidden text-xs text-slate-500 sm:block">AI infrastructure portfolio runtime</p>
+          <div className="flex items-center gap-3">
+            <img
+              src={profile.imageUrl}
+              alt={profile.name}
+              className="h-9 w-9 rounded-xl border border-cyan-300/20 bg-cyan-300/10 object-cover"
+            />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-100">{profile.name}</p>
+              <p className="hidden text-xs text-slate-500 sm:block">AI infrastructure portfolio runtime</p>
+            </div>
           </div>
-        </div>
         <div className="flex items-center gap-2">
           <button className="nav-chip hidden sm:inline-flex" onClick={onAssistant}>BALAJI_AI_AGENT</button>
           <button className="nav-chip" onClick={onPalette}>/ Ctrl K</button>
@@ -352,14 +354,19 @@ function Projects() {
               <ShieldCheck className="h-6 w-6 shrink-0 text-cyan-300" />
             </div>
 
-            {project.imageUrl && (
+            {project.imageUrl ? (
               <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black/30">
                 <img
                   src={project.imageUrl}
                   alt={project.title}
                   className="h-48 w-full object-cover"
                   loading="lazy"
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = profile.imageUrl; }}
                 />
+              </div>
+            ) : (
+              <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                <div className="flex h-48 items-center justify-center text-slate-400">No image available</div>
               </div>
             )}
 
