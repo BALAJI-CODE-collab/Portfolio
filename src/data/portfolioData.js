@@ -149,12 +149,12 @@ export const achievements = [
 ];
 
 export const resume = {
-  viewUrl: '/finalresume%20%281%29.pdf',
-  downloadUrl: '/finalresume%20%281%29.pdf',
+  viewUrl: '/resume.pdf',
+  downloadUrl: '/resume.pdf',
 };
 
 export const profile = {
-  imageUrl: '/My%20image.jpeg',
+  imageUrl: '/profile.jpg',
 };
 
 export const commands = [
