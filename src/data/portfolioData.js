@@ -83,41 +83,6 @@ export const architecture = [
   ['Delivery', 'GitHub + CI Concepts', 'Versioned project systems, repository workflows and production-oriented iteration.'],
 ];
 
-export const projects = [
-  {
-    title: 'Automated Grading and Sorting of Aggregated Produce using Computer Vision',
-    signal: 'Vision Inference Product',
-    description: 'A computer vision automation system for produce grading, defect detection, image quality assessment and shelf-life prediction.',
-    stack: ['YOLOv11', 'CBAM Attention', 'OpenCV', 'Python', 'Automation'],
-    logs: ['Inference confidence 98.2%', 'Defect classes calibrated', 'Shelf-life model linked'],
-    githubUrl: 'https://github.com/BALAJI-CODE-collab',
-  },
-  {
-    title: 'Alzheimer\'s Disease Early Prediction',
-    signal: 'Predictive Healthcare Runtime',
-    description: 'A cognitive gameplay analytics workflow that studies behavioral signals and runs ML prediction systems for early risk analysis.',
-    stack: ['Machine Learning', 'Behavioral Analysis', 'Scikit-learn', 'Healthcare AI'],
-    logs: ['Gameplay telemetry parsed', 'Prediction confidence 94.7%', 'Feature drift monitored'],
-    githubUrl: 'https://github.com/BALAJI-CODE-collab',
-  },
-  {
-    title: 'Eco-Route: Carbon Footprint Navigator',
-    signal: 'Optimization Dashboard',
-    description: 'A route intelligence platform using Maps API, CEROS optimization, Streamlit dashboards and Folium visualizations.',
-    stack: ['Google Maps API', 'CEROS', 'Streamlit', 'Folium', 'Python'],
-    logs: ['Carbon saved 18%', 'Traffic stream active', 'Route optimization complete'],
-    githubUrl: 'https://github.com/BALAJI-CODE-collab',
-  },
-  {
-    title: 'GitHub Systems: TREDENCE, SEAII, TR-106-Origin, ML',
-    signal: 'Engineering Repository Cluster',
-    description: 'A portfolio of repositories exploring intelligent systems, software engineering, automation and applied ML workflows.',
-    stack: ['GitHub', 'Full Stack', 'AI Systems', 'MLOps Experiments'],
-    logs: ['Repos indexed', 'Contributions synced', 'Build graph online'],
-    githubUrl: 'https://github.com/BALAJI-CODE-collab',
-  },
-];
-
 export const socialProfiles = [
   {
     label: 'GitHub',
@@ -182,6 +147,15 @@ export const achievements = [
   'T-shirt prize',
   'Rs. 2000 cash prize',
 ];
+
+export const resume = {
+  viewUrl: '/finalresume (1).pdf',
+  downloadUrl: '/finalresume (1).pdf',
+};
+
+export const profile = {
+  imageUrl: '/My image.jpeg',
+};
 
 export const commands = [
   ['view projects', 'projects'],

@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -22,19 +21,15 @@ import {
 import { AIAssistant } from './components/AIAssistant';
 import { CommandPalette } from './components/CommandPalette';
 import { ArchitectureBackdrop, LivingGrid } from './components/LivingGrid';
-import {
-  achievements,
-  architecture,
-  education,
-  experience,
-  focusItems,
-  metrics,
-  projects,
-  roles,
-  skills,
-  socialProfiles,
-  statusItems,
-} from './data/portfolioData';
+import { architecture, focusItems, metrics, roles, statusItems } from './data/portfolioData';
+import { projects } from './data/projects';
+import { profile, } from './data/profile';
+import { skills, achievements } from './data/skills';
+import { experience } from './data/experience';
+import { education } from './data/education';
+import { certifications } from './data/certifications';
+import { resume } from './data/resume';
+import { socialProfiles } from './data/socials';
 
 function useTyping(words) {
   const [wordIndex, setWordIndex] = useState(0);
@@ -218,6 +213,55 @@ function SectionContext({ label, children }) {
   );
 }
 
+function Resume() {
+  return (
+    <section id="resume" className="fade-section mx-auto max-w-7xl px-5 py-24">
+      <SectionTitle eyebrow="Resume" title="View & download your resume." />
+      <SectionContext label="resume actions">
+        Use the view/download options below. View opens the PDF in a new tab.
+      </SectionContext>
+
+      <div className="mt-14 grid gap-6 lg:grid-cols-2">
+        <div className="glass-panel p-6">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan-300">Your profile</p>
+          <div className="mt-6 flex items-center gap-5">
+            <img
+              src={profile.imageUrl}
+              alt="Balaji Madhan"
+              className="h-20 w-20 rounded-full border border-cyan-200/20 bg-cyan-300/10 object-cover"
+            />
+            <div>
+              <p className="text-2xl font-bold text-white">Balaji Madhan</p>
+              <p className="mt-1 text-sm text-slate-400">AI/ML + Cloud Systems Engineer</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-panel p-6">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan-300">Resume files</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              className="project-action mt-0"
+              href={resume.viewUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View Resume
+              <ExternalLink className="h-4 w-4" />
+            </a>
+
+            <a className="project-action mt-0" href={resume.downloadUrl} download>
+              Download Resume
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 function FocusAndMetrics() {
   return (
     <section className="fade-section mx-auto max-w-7xl px-5 py-24">
@@ -306,6 +350,18 @@ function Projects() {
               </div>
               <ShieldCheck className="h-6 w-6 shrink-0 text-cyan-300" />
             </div>
+
+            {project.imageUrl && (
+              <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                <img
+                  src={project.imageUrl}
+                  alt={project.title}
+                  className="h-48 w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            )}
+
             <p className="mt-5 leading-7 text-slate-400">{project.description}</p>
             <div className="mt-6 flex flex-wrap gap-2">
               {project.stack.map((tech) => <span key={tech} className="tech-pill">{tech}</span>)}
@@ -323,6 +379,7 @@ function Projects() {
     </section>
   );
 }
+
 
 function ProfileNetwork() {
   return (
@@ -503,6 +560,7 @@ export default function App() {
           <FocusAndMetrics />
           <ArchitectureStack />
           <Projects />
+          <Resume />
           <ProfileNetwork />
           <ExperienceEducationSkills />
           <Contact />
