@@ -1,19 +1,16 @@
-// Replace/update skills here
-export const skills = [
-  'Python',
-  'CUDA',
-  'TensorFlow',
-  'Docker',
-  'Kafka',
-  'React',
-  'Vertex AI',
-  'Kubernetes',
-  'GitHub',
-  'Machine Learning',
-  'Computer Vision',
-  'Full Stack',
-  'VLSI',
-  'Networking',
+export const skillGroups = [
+  {
+    category: 'AI & Machine Learning',
+    items: ['TensorFlow', 'Machine Learning', 'Computer Vision'],
+  },
+  {
+    category: 'Cloud & Infrastructure',
+    items: ['Vertex AI', 'Docker', 'Kubernetes', 'Kafka'],
+  },
+  {
+    category: 'Development & Systems',
+    items: ['Python', 'CUDA', 'React', 'Full Stack', 'GitHub', 'VLSI', 'Networking'],
+  },
 ];
 
 export const achievements = [
@@ -25,4 +22,3 @@ export const achievements = [
   'T-shirt prize',
   'Rs. 2000 cash prize',
 ];
-

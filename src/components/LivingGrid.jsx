@@ -11,7 +11,7 @@ export function LivingGrid({ style, mode = 'hero' }) {
   const isAmbient = mode === 'ambient';
 
   return (
-    <div className={`absolute inset-0 z-[2] pointer-events-none select-none will-change-transform ${isAmbient ? 'opacity-[0.28]' : 'opacity-[0.78]'}`} style={style}>
+    <div className={`absolute inset-0 z-[2] pointer-events-none select-none will-change-transform ${isAmbient ? 'opacity-[0.2]' : 'opacity-[0.42]'}`} style={style}>
       <div className={`grid h-full min-h-screen grid-cols-2 gap-px bg-[#1a1a1a] md:grid-cols-3 lg:grid-cols-4 ${isAmbient ? 'grid-rows-3' : 'grid-rows-5'}`}>
         {terminals.map((terminal, index) => (
           <motion.div
@@ -70,7 +70,7 @@ export function ArchitectureBackdrop({ style }) {
   ];
 
   return (
-    <div className="absolute inset-0 z-[3] pointer-events-none opacity-75 mix-blend-screen will-change-transform" style={style}>
+    <div className="absolute inset-0 z-[3] pointer-events-none opacity-45 mix-blend-screen will-change-transform" style={style}>
       <svg className="h-full w-full" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="infra-line" x1="0" x2="1">

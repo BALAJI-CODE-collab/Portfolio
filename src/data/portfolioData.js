@@ -102,52 +102,6 @@ export const socialProfiles = [
   },
 ];
 
-export const experience = [
-  ['KrypC Technologies Pvt Ltd', 'Artificial Intelligence Intern', 'AI enterprise workflows, scalable systems, ML optimization and deployment lifecycle exposure.'],
-  ['Prodigy Infotech', 'Machine Learning Intern', 'Predictive modeling, classification systems, model evaluation and practical ML workflow development.'],
-];
-
-export const skills = [
-  'Python',
-  'CUDA',
-  'TensorFlow',
-  'Docker',
-  'Kafka',
-  'React',
-  'Vertex AI',
-  'Kubernetes',
-  'GitHub',
-  'Machine Learning',
-  'Computer Vision',
-  'Full Stack',
-  'VLSI',
-  'Networking',
-];
-
-export const education = {
-  university: 'SRM Institute of Science and Technology, Trichy',
-  degree: 'B.Tech Artificial Intelligence and Machine Learning',
-  cgpa: '8.61',
-  gpa: [
-    { label: 'Sem 1', score: 8.0 },
-    { label: 'Sem 2', score: 8.05 },
-    { label: 'Sem 3', score: 8.95 },
-    { label: 'Sem 4', score: 8.97 },
-    { label: 'Sem 5', score: 9.05 },
-  ],
-  school: 'Maharishi International Residential School',
-};
-
-export const achievements = [
-  'Cisco Packet Tracer',
-  'NPTEL Python for Data Science',
-  'Coursera Certifications',
-  '3 Hackathons',
-  'Medal',
-  'T-shirt prize',
-  'Rs. 2000 cash prize',
-];
-
 export const commands = [
   ['view projects', 'projects'],
   ['open github', 'github'],

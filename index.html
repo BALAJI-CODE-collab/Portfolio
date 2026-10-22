@@ -999,10 +999,10 @@
                             <h3 class="text-2xl font-bold text-white mb-2">B.Tech Artificial Intelligence & Machine Learning</h3>
                             <p class="text-[#00ffcc] font-mono text-sm">SRM Institute of Science and Technology, Trichy</p>
                         </div>
-                        <p class="text-gray-500 font-mono text-sm mt-2 lg:mt-0">Pursuing (III Year)</p>
+                        <p class="text-gray-500 font-mono text-sm mt-2 lg:mt-0">Pursuing (IV Year)</p>
                     </div>
                     <div class="mb-6">
-                        <p class="text-gray-400 mb-3">CGPA: <span class="text-[#00ff41] font-bold">8.61</span></p>
+                        <p class="text-gray-400 mb-3">CGPA: <span class="text-[#00ff41] font-bold">8.68</span></p>
                         <p class="text-gray-500 text-sm mb-4">Semester Progression:</p>
                         <div class="flex flex-wrap gap-3">
                             <div class="px-4 py-2 bg-[#00ffcc]/10 border border-[#00ffcc]/30 rounded font-mono text-sm text-[#00ffcc]">Sem 1: 8.00</div>
@@ -1103,8 +1103,8 @@
                 <a href="https://linkedin.com/in/balaji-madhan" target="_blank" class="group px-8 py-3 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm rounded">
                     LinkedIn
                 </a>
-                <a href="#projects" class="group px-8 py-3 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm rounded">
-                    Resume
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="group px-8 py-3 border border-[#00ffcc] text-[#00ffcc] hover:bg-[#00ffcc]/10 transition-all font-mono text-sm rounded">
+                    View Resume
                 </a>
             </div>
         </div>
@@ -1147,10 +1147,10 @@
                     <span>open github</span>
                     <span class="text-[#00ffcc]">GitHub</span>
                 </div>
-                <div class="palette-command" data-command="download resume">
+                <a href="/resume.pdf" download="Balaji-Madhan-Resume.pdf" class="palette-command no-underline" data-command="download resume">
                     <span>download resume</span>
                     <span class="text-[#00ffcc]">Resume</span>
-                </div>
+                </a>
                 <div class="palette-command" data-command="contact balaji">
                     <span>contact balaji</span>
                     <span class="text-[#00ffcc]">#contact</span>
@@ -1301,9 +1301,6 @@
             }
             if (command === 'open github') {
                 window.open('https://github.com/BALAJI-CODE-collab', '_blank');
-            }
-            if (command === 'download resume') {
-                window.location.href = '#contact';
             }
             if (command === 'contact balaji') {
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
